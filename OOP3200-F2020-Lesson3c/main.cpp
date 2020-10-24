@@ -20,7 +20,7 @@ int main()
 		std::map<std::string, Vector2D<float>*> vectors;
 		//ifstream
 		std::ifstream infile;
-		std::string fileName = "MockDataForTesting.txt";
+		std::string fileName = "PointData.dat";
 
 		/******************************************************************************
 		 *	Reading Labels/Points into the Map:
@@ -60,12 +60,18 @@ int main()
 			}
 			infile.close();
 		}
-
-		for (const auto& vector : vectors)
+		//if the map is empty, do not continue
+		if (vectors.empty())
 		{
-			std::cout << vector.first << "   " << vector.second->ToString() << std::endl;
+			throw;
 		}
-
+		else
+		{
+			for (auto& vector : vectors)
+			{
+				std::cout << vector.first << "   " << vector.second->ToString() << std::endl;
+			}
+		}
 		/******************************************************************************
 		 *	Determine the Total Distance Between All Points in Order:
 		 *	Use an iterator and a loop to traverse each label/point in the map. For
@@ -77,6 +83,18 @@ int main()
 		 *	to the user how many points the map contains and what the total distance is.
 		 ******************************************************************************/
 
+		Vector2D<float>* tempVector = vectors.begin()->second;//new Vector2D<float>(0.0f, 0.0f);
+		std::cout << tempVector->ToString();
+		Vector2D<float>* tempVector2 = vectors.begin()->second;
+		auto distance = Vector2D<float>::Distance(tempVector, tempVector2);
+
+		for (auto& vector : vectors)
+		{
+
+			std::cout << vector.first << "   " << vector.second->ToString() << std::endl;
+
+			tempVector = vector.second;
+		}
 
 
 		/******************************************************************************
