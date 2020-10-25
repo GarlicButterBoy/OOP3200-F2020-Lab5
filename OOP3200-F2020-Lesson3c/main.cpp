@@ -1,7 +1,7 @@
 /*
  * Nick Sturch-Flint 100303769
  * October 25, 2020
- * main.cpp 
+ * main.cpp
  */
 
 #include <fstream>
@@ -89,10 +89,12 @@ int main()
 		}
 		else //if everything works
 		{
+			std::cout << "\n================================================================================================================\n";
 			for (auto& vector : vectors)
 			{
 				std::cout << vector.first << "   " << vector.second->ToString() << std::endl;
 			}
+			std::cout << "\n================================================================================================================\n\n";
 		}
 		/******************************************************************************
 		 *	Determine the Total Distance Between All Points in Order:
@@ -107,6 +109,7 @@ int main()
 		const auto map_iter = vectors.begin();
 		Vector2D<float>* tempVector = map_iter->second; //new Vector2D<float>(0.0f, 0.0f);
 
+		std::cout << "\n================================================================================================================\n";
 		for (auto& vector : vectors)
 		{
 			auto distance = Vector2D<float>::Distance(*tempVector, *vector.second);
@@ -115,9 +118,11 @@ int main()
 
 			tempVector = vector.second;
 		}
+		std::cout << "\n================================================================================================================\n\n";
+		std::cout << "\n================================================================================================================\n";
 		//print the number of stored vectors
 		std::cout << "\nThe total number of Vectors the map contains is " << vectors.size() << std::endl;
-
+		std::cout << "\n================================================================================================================\n\n";
 		/******************************************************************************
 		 *	Determine the Distance Between the Start Point and a User Selected Point:
 		 *	Prompt the user to enter a label or to enter "quit" to end.  If the user
@@ -127,7 +132,7 @@ int main()
 		 *	Otherwise, tell the user that the label they entered is not in the map.
 		 *	Repeat these steps until the user enters "quit".
 		 ******************************************************************************/
-
+		std::cout << "\n================================================================================================================\n";
 		std::cout << "\nPlease enter the label of the point you wish to go to or type 'q' to exit.\n";
 		//user can input as many labels as they like until inputting q
 		while (userInput != exit)
@@ -153,6 +158,7 @@ int main()
 			{
 				std::cout << "Label not found, try again!" << std::endl;
 			}
+			std::cout << "\n================================================================================================================\n";
 		}
 	}
 	/******************************************************************************
