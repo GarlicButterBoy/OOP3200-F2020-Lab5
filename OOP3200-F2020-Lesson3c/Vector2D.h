@@ -58,7 +58,7 @@ public:
 		out << rhs.ToString();
 		return out;
 	}
-	
+
 	friend std::istream& operator>>(std::istream& in, Vector2D& rhs)
 	{
 		in >> rhs.m_x;
@@ -123,7 +123,7 @@ Vector2D<T>::Vector2D(T x, T y) : m_x(x), m_y(y)
 template <class T>
 Vector2D<T>::~Vector2D()
 {
-	
+
 }
 
 template <class T>

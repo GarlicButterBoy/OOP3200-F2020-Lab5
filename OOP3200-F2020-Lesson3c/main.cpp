@@ -2,7 +2,7 @@
 #include <iomanip>
 #include <iostream>
 #include <map>
-
+#include <Windows.h>
 
 
 #include "Vector2D.h"
@@ -21,6 +21,9 @@ int main()
 		//ifstream
 		std::ifstream infile;
 		std::string fileName = "PointData.dat";
+		std::string exit = "q";
+		std::string userInput = "";
+
 
 		/******************************************************************************
 		 *	Reading Labels/Points into the Map:
@@ -63,7 +66,7 @@ int main()
 		//if the map is empty, do not continue
 		if (vectors.empty())
 		{
-			throw;
+			//throw;
 		}
 		else
 		{
@@ -82,20 +85,24 @@ int main()
 		 *	objects, so you should not need to use any complicated math here.  Report
 		 *	to the user how many points the map contains and what the total distance is.
 		 ******************************************************************************/
+		const auto map_iter = vectors.begin();
 
-		Vector2D<float>* tempVector = vectors.begin()->second;//new Vector2D<float>(0.0f, 0.0f);
-		std::cout << tempVector->ToString();
-		Vector2D<float>* tempVector2 = vectors.begin()->second;
-		auto distance = Vector2D<float>::Distance(tempVector, tempVector2);
+		Vector2D<float>* tempVector = map_iter->second; //new Vector2D<float>(0.0f, 0.0f);
+
+	//	Vector2D<float>* firstVector = vectors.begin()->second;
 
 		for (auto& vector : vectors)
 		{
+			auto distance = Vector2D<float>::Distance(*tempVector, *vector.second);
 
-			std::cout << vector.first << "   " << vector.second->ToString() << std::endl;
+			//Vector2D<float> totalDistance = tempVector - vector.second;
+			//std::cout <<
+			std::cout << vector.first << " is located at " << vector.second->ToString() << " and is " << distance << " from " << tempVector->ToString() << std::endl;
 
 			tempVector = vector.second;
 		}
-
+		//print the number of stored vectors
+		std::cout << "\nThe total number of Vectors the map contains is " << vectors.size() << std::endl;
 
 		/******************************************************************************
 		 *	Determine the Distance Between the Start Point and a User Selected Point:
@@ -107,6 +114,34 @@ int main()
 		 *	Repeat these steps until the user enters "quit".
 		 ******************************************************************************/
 
+		std::cout << "\nPlease enter the label of the point you wish to go to or type 'q' to exit.\n";
+
+
+
+		while (userInput != exit)
+		{
+			//Get the label
+			std::cout << "Label: ";
+
+			std::cin >> userInput;
+
+			//if the label exists
+			if (vectors.find(userInput) != vectors.end())
+			{
+				auto distance = Vector2D<float>::Distance(*vectors[userInput], *vectors.begin()->second);
+
+				std::cout << "Found! The Label " << userInput << " holds a value of" << *vectors[userInput] << std::endl
+				<< "It is a total distance of " << distance << " from " << *vectors.begin()->second << std::endl;
+			}
+			else if (userInput == "q")
+			{
+				std::cout << "Thank you for using our app, have a nice day!\n";
+			}
+			else //if the label doesn't exist
+			{
+				std::cout << "Label not found, try again!" << std::endl;
+			}
+		}
 	}
 	/******************************************************************************
 	 *	Exception Handling:
@@ -117,9 +152,9 @@ int main()
 	{
 		std::cout << ex.what() << std::endl;
 	}
-	catch(std::string e)  // an exception was thrown
+	catch(std::ifstream::failure e)  // an exception was thrown
 	{
-		std::cout << e;
+		std::cout << e.what();
 	}
 	catch (...)  // an exception was thrown
 	{
