@@ -1,3 +1,9 @@
+/*
+ * Nick Sturch-Flint 100303769
+ * October 25, 2020
+ * main.cpp 
+ */
+
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -61,14 +67,27 @@ int main()
 				auto* tempVector = new Vector2D<float>(x, y);
 				vectors[name] = tempVector;
 			}
-			infile.close();
+			infile.close(); //close the file when done
+		}
+		else
+		{ //if the fail fails to open
+			std::cerr << "\n---------------------------------------------------------\n" <<
+				fileName << " could not be opened for input. Check that the file exists."
+				<< "\n---------------------------------------------------------\n\n"
+				<< std::endl;
+			system("pause");
+			return 0;
 		}
 		//if the map is empty, do not continue
 		if (vectors.empty())
 		{
-			//throw;
+			std::cerr << "\n--------------------------------------------------------------------------------------------\n" <<
+						 "The map is empty. Check that the file contains valid data, or that the file name is correct."
+			<< std::endl << "--------------------------------------------------------------------------------------------\n\n";
+			system("pause");
+			return 0;
 		}
-		else
+		else //if everything works
 		{
 			for (auto& vector : vectors)
 			{
@@ -86,17 +105,12 @@ int main()
 		 *	to the user how many points the map contains and what the total distance is.
 		 ******************************************************************************/
 		const auto map_iter = vectors.begin();
-
 		Vector2D<float>* tempVector = map_iter->second; //new Vector2D<float>(0.0f, 0.0f);
-
-	//	Vector2D<float>* firstVector = vectors.begin()->second;
 
 		for (auto& vector : vectors)
 		{
 			auto distance = Vector2D<float>::Distance(*tempVector, *vector.second);
 
-			//Vector2D<float> totalDistance = tempVector - vector.second;
-			//std::cout <<
 			std::cout << vector.first << " is located at " << vector.second->ToString() << " and is " << distance << " from " << tempVector->ToString() << std::endl;
 
 			tempVector = vector.second;
@@ -115,14 +129,12 @@ int main()
 		 ******************************************************************************/
 
 		std::cout << "\nPlease enter the label of the point you wish to go to or type 'q' to exit.\n";
-
-
-
+		//user can input as many labels as they like until inputting q
 		while (userInput != exit)
 		{
 			//Get the label
 			std::cout << "Label: ";
-
+			//user input
 			std::cin >> userInput;
 
 			//if the label exists
@@ -132,7 +144,7 @@ int main()
 
 				std::cout << "Found! The Label " << userInput << " holds a value of" << *vectors[userInput] << std::endl
 				<< "It is a total distance of " << distance << " from " << *vectors.begin()->second << std::endl;
-			}
+			} //if the user wants to quit
 			else if (userInput == "q")
 			{
 				std::cout << "Thank you for using our app, have a nice day!\n";
@@ -148,17 +160,17 @@ int main()
 	 *	Catch any std::exception thrown. Report to the user that a run-time error
 	 *	occurred and show what exception was thrown.
 	 ******************************************************************************/
+	catch(std::ios_base::failure e)  // an exception was thrown
+	{
+		std::cerr << e.what();
+	}
 	catch (std::exception& ex)  // an exception was thrown
 	{
-		std::cout << ex.what() << std::endl;
-	}
-	catch(std::ifstream::failure e)  // an exception was thrown
-	{
-		std::cout << e.what();
+		std::cerr << ex.what() << std::endl;
 	}
 	catch (...)  // an exception was thrown
 	{
-		std::cout << "Exception Occured\n";
+		std::cerr << "Exception Occured\n";
 	}
 	// END-OF-PROGRAM
 
